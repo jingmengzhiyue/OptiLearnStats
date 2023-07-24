@@ -8,15 +8,15 @@ sys.path.append('../ data_preprocessing/')
 
 def txt2pd(path):
     
-    
-    scaler = MinMaxScaler()
-    
-    data = pd.read_csv(path, sep='\t', header=None, names=['travel', 'game', 'ice-cream', 'label'])
-    
-    data['label'] = data['label'].replace({'largeDoses': 1, 'smallDoses': 2, 'didntLike': 3})
-    
-    data_scaled = data.copy()
-    data_scaled.iloc[:, :3] = scaler.fit_transform(data_scaled.iloc[:, :3])
+    with open(path, 'r') as file:
+        scaler = MinMaxScaler()
+        
+        data = pd.read_csv(path, sep='\t', header=None, names=['travel', 'game', 'ice-cream', 'label'])
+        
+        data['label'] = data['label'].replace({'largeDoses': 1, 'smallDoses': 2, 'didntLike': 3})
+        
+        data_scaled = data.copy()
+        data_scaled.iloc[:, :3] = scaler.fit_transform(data_scaled.iloc[:, :3])
 
 # 输出缩放后的DataFrame
         
@@ -35,12 +35,12 @@ dist = np.zeros((len(test),len(train)))
 for i in range(len(test)):
     for j in range(len(train)):
         dist[i, j] = np.sum( np.abs(test_data.values[i] - train_data.values[j]))
-k = 13
-top_k_indices = np.argsort(dist, axis=1)[:, :k]
+k = 1
+top_k_indices = np.argsort(dist, axis=1)[:, -k:]
 # print(top_k_indices)
 predit = np.zeros((len(test), k))
 for i in range(len(test)):
-    predit[i,:] =  train.loc[top_k_indices[i,:], 'label']
+    predit[i,:] = column_4_data = train.loc[top_k_indices[i,:], 'label']
 most_common = np.apply_along_axis(lambda row: Counter(row).most_common(1)[0][0], axis=1, arr=predit)
 t=0
 # for i in range(len(most_common)):

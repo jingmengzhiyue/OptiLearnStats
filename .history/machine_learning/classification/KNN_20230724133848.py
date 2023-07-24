@@ -35,8 +35,8 @@ dist = np.zeros((len(test),len(train)))
 for i in range(len(test)):
     for j in range(len(train)):
         dist[i, j] = np.sum( np.abs(test_data.values[i] - train_data.values[j]))
-k = 13
-top_k_indices = np.argsort(dist, axis=1)[:, :k]
+k = 1
+top_k_indices = np.argsort(dist, axis=1)[:, k:]
 # print(top_k_indices)
 predit = np.zeros((len(test), k))
 for i in range(len(test)):
